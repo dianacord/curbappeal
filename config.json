@@ -1,0 +1,18 @@
+{
+  "agency": {
+    "name": "CurbAppeal Studio",
+    "owner": "Diana Cordovez",
+    "email": "dianacarolina.cordovez@gmail.com",
+    "phone": "",
+    "city": "",
+    "currency": "USD"
+  },
+  "pricing": {
+    "starter": { "setup": 490 },
+    "growth": { "setup": 890, "monthly": 290 },
+    "partner": { "setup": 1490, "monthly": 490 }
+  },
+  "model": "claude-opus-4-8",
+  "cliModel": "claude-opus-4-8",
+  "port": 4747
+}

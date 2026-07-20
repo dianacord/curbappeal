@@ -1,0 +1,54 @@
+{
+  "id": "FIXTURE_bloom_and_bark",
+  "displayName": { "text": "Bloom & Bark Pet Grooming", "languageCode": "en" },
+  "primaryTypeDisplayName": { "text": "Pet Groomer" },
+  "formattedAddress": "2211 S Lamar Blvd, Austin, TX 78704, USA",
+  "internationalPhoneNumber": "+1 512-555-0147",
+  "googleMapsUri": "https://maps.google.com/?cid=fixture-bloom-bark",
+  "rating": 4.9,
+  "userRatingCount": 87,
+  "priceLevel": "PRICE_LEVEL_MODERATE",
+  "websiteUri": "fixture://sites/bloomandbark.html",
+  "editorialSummary": { "text": "Boutique dog grooming studio with a calm, cage-free approach and organic products." },
+  "regularOpeningHours": {
+    "weekdayDescriptions": [
+      "Monday: 9:00 AM – 5:00 PM",
+      "Tuesday: 9:00 AM – 5:00 PM",
+      "Wednesday: 9:00 AM – 5:00 PM",
+      "Thursday: 9:00 AM – 5:00 PM",
+      "Friday: 9:00 AM – 5:00 PM",
+      "Saturday: 10:00 AM – 4:00 PM",
+      "Sunday: Closed"
+    ]
+  },
+  "photos": [
+    { "name": "fixture://photos/bloom-1.svg" },
+    { "name": "fixture://photos/bloom-2.svg" }
+  ],
+  "reviews": [
+    {
+      "rating": 5,
+      "relativePublishTimeDescription": "a week ago",
+      "authorAttribution": { "displayName": "Caitlin M." },
+      "text": { "text": "My anxious rescue greyhound actually pulls TOWARD the door now. Quiet, unhurried, no cages. Worth every cent and then some." }
+    },
+    {
+      "rating": 5,
+      "relativePublishTimeDescription": "3 weeks ago",
+      "authorAttribution": { "displayName": "Rob D." },
+      "text": { "text": "Best doodle cut in Austin, hands down. Booking is by text which is a little chaotic — took two days to get a reply — but the result is worth it." }
+    },
+    {
+      "rating": 4,
+      "relativePublishTimeDescription": "2 months ago",
+      "authorAttribution": { "displayName": "Steph L." },
+      "text": { "text": "Lovely people, gorgeous results, my corgi came back smelling like lavender. Only wish their website showed prices — had to call to find out." }
+    },
+    {
+      "rating": 5,
+      "relativePublishTimeDescription": "3 months ago",
+      "authorAttribution": { "displayName": "Hector V." },
+      "text": { "text": "They send a photo mid-groom so you can approve the length. Small touch, huge trust. Their Instagram is adorable but hasn't posted in months — post more, people need to see this work!" }
+    }
+  ]
+}

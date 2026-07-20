@@ -1,0 +1,78 @@
+{
+  "id": "FIXTURE_la_vecina_cafe",
+  "displayName": { "text": "La Vecina Café", "languageCode": "en" },
+  "primaryTypeDisplayName": { "text": "Mexican Café" },
+  "formattedAddress": "4823 SE Woodstock Blvd, Portland, OR 97206, USA",
+  "internationalPhoneNumber": "+1 503-555-0182",
+  "googleMapsUri": "https://maps.google.com/?cid=fixture-la-vecina",
+  "rating": 4.7,
+  "userRatingCount": 212,
+  "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+  "editorialSummary": { "text": "Family-run café serving Oaxacan-style breakfasts, pan dulce, and horchata lattes in a sunny corner spot." },
+  "regularOpeningHours": {
+    "weekdayDescriptions": [
+      "Monday: Closed",
+      "Tuesday: 7:00 AM – 3:00 PM",
+      "Wednesday: 7:00 AM – 3:00 PM",
+      "Thursday: 7:00 AM – 3:00 PM",
+      "Friday: 7:00 AM – 3:00 PM",
+      "Saturday: 8:00 AM – 4:00 PM",
+      "Sunday: 8:00 AM – 2:00 PM"
+    ]
+  },
+  "photos": [
+    { "name": "fixture://photos/la-vecina-1.svg" },
+    { "name": "fixture://photos/la-vecina-2.svg" },
+    { "name": "fixture://photos/la-vecina-3.svg" }
+  ],
+  "reviews": [
+    {
+      "rating": 5,
+      "relativePublishTimeDescription": "2 weeks ago",
+      "authorAttribution": { "displayName": "Marisol T." },
+      "text": { "text": "The chilaquiles verdes are the best I've had outside my abuela's kitchen. Doña Rosa remembers everyone's order and the horchata latte is dangerously good. This place deserves way more attention." }
+    },
+    {
+      "rating": 5,
+      "relativePublishTimeDescription": "a month ago",
+      "authorAttribution": { "displayName": "Kevin B." },
+      "text": { "text": "Hidden gem on Woodstock. Concha french toast on weekends only — set an alarm, they sell out by 10. Cash and card both fine. Wish they had a website so I could check the specials before biking over." }
+    },
+    {
+      "rating": 4,
+      "relativePublishTimeDescription": "a month ago",
+      "authorAttribution": { "displayName": "Priya N." },
+      "text": { "text": "Wonderful tamales and the cafe de olla smells like cinnamon heaven. Gets crowded on weekends and there's often a wait — they could really use online ordering for pickup." }
+    },
+    {
+      "rating": 5,
+      "relativePublishTimeDescription": "2 months ago",
+      "authorAttribution": { "displayName": "Gabriela R." },
+      "text": { "text": "Como en casa. El pan dulce se hace ahí mismo cada mañana y se nota. Los dueños son amabilísimos. Síganlos en Instagram @lavecinapdx para ver cuando sale el pan." }
+    },
+    {
+      "rating": 5,
+      "relativePublishTimeDescription": "3 months ago",
+      "authorAttribution": { "displayName": "Dana W." },
+      "text": { "text": "My Saturday ritual. Breakfast burrito with their smoky salsa roja, coffee, sunshine at the window counter. Family owned and it shows in every detail." }
+    },
+    {
+      "rating": 3,
+      "relativePublishTimeDescription": "4 months ago",
+      "authorAttribution": { "displayName": "Tom H." },
+      "text": { "text": "Food is genuinely great but showed up Monday and they were closed — nothing online said so. Hours on the door didn't match what Google showed either. Get it together on the info front, the cooking is 5 stars." }
+    },
+    {
+      "rating": 5,
+      "relativePublishTimeDescription": "5 months ago",
+      "authorAttribution": { "displayName": "Jae P." },
+      "text": { "text": "Ordered a tres leches for my mom's birthday by calling — worth every penny. They do custom cakes but you'd never know it, nothing is posted anywhere. Tell your friends." }
+    },
+    {
+      "rating": 5,
+      "relativePublishTimeDescription": "6 months ago",
+      "authorAttribution": { "displayName": "Erin C." },
+      "text": { "text": "The kind of neighborhood spot that makes a neighborhood. Kids' hot chocolate comes with a little concha bunny. Perfection." }
+    }
+  ]
+}
