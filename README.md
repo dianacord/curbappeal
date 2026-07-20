@@ -31,6 +31,8 @@ bun start        # → http://localhost:4747
 
 Open http://localhost:4747, type **La Vecina Café** (a built-in demo business), pick a tone, hit **Generate kit**.
 
+> **Want an instant, offline demo?** If you're logged into Claude Code, the default run uses it (real, but 1–3 min/kit). For a fast deterministic tour with zero waiting, start with `CURBAPPEAL_LLM_MODE=mock CURBAPPEAL_PLACES_MODE=fixture bun start` — kits generate in under a second with canned content.
+
 **No API keys are required to start.** CurbAppeal auto-detects what you have:
 
 | Mode | How it's picked | What it means |
@@ -60,7 +62,7 @@ Edit `config.json`:
 - `pricing` — your three tiers; proposal + playbook use these numbers.
 - `model` / `cliModel` — Claude model for api / cli mode (default `claude-opus-4-8`; use `claude-sonnet-5` to cut cost ~40%).
 
-Spanish-market ready: set copy language to **Español** (or Auto) — the entire kit, proposal included, renders in Spanish.
+Spanish-market ready: set copy language to **Español** (or Auto) — the entire kit, proposal included, renders in Spanish. (This runs in `api`/`cli` mode; the offline `mock` demo content is English-only.)
 
 ## Architecture (for the curious)
 

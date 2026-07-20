@@ -1,7 +1,7 @@
 // The kit pipeline: resolve → harvest → brief → page → posts → proposal → outreach → package.
 // Each stage writes files into kits/<slug>/ and updates kit.json, so kits are
 // inspectable on disk and failed runs can be retried from the failed stage.
-import { mkdirSync, writeFileSync, readFileSync, existsSync, readdirSync } from "node:fs";
+import { mkdirSync, writeFileSync, readFileSync, existsSync, readdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { KITS_DIR, config, resolveLlmMode, resolvePlacesMode, money, type LlmMode, type PlacesMode } from "./config";
 import { generateJson } from "./llm";
@@ -55,7 +55,12 @@ export function kitDir(slug: string): string {
 export function loadKit(slug: string): KitState | null {
   const p = join(kitDir(slug), "kit.json");
   if (!existsSync(p)) return null;
-  return JSON.parse(readFileSync(p, "utf8")) as KitState;
+  try {
+    return JSON.parse(readFileSync(p, "utf8")) as KitState;
+  } catch {
+    // A truncated/hand-edited kit.json must not take down the dashboard.
+    return null;
+  }
 }
 
 export function listKits(): KitState[] {
@@ -265,9 +270,13 @@ const STAGES: Record<StageName, StageFn> = {
   },
 
   async package(ctx) {
-    const zipPath = join(ctx.dir, "kit.zip");
+    // Zip ONLY the client-facing deliverables — never kit.json (operator notes,
+    // goal, pipeline state) or the raw place/harvest research JSON.
+    const DELIVERABLES = ["index.html", "assets", "proposal.html", "brief.md", "posts.md", "outreach.md"];
+    const present = DELIVERABLES.filter((f) => existsSync(join(ctx.dir, f)));
+    rmSync(join(ctx.dir, "kit.zip"), { force: true });
     const proc = Bun.spawn(
-      ["zip", "-qr", zipPath, ".", "-x", "kit.zip"],
+      ["zip", "-qr", "kit.zip", ...present],
       { cwd: ctx.dir, stdout: "ignore", stderr: "pipe" },
     );
     const code = await proc.exited;

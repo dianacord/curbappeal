@@ -1,6 +1,6 @@
 // HTTP server & routing. Zero framework — Bun.serve with a small matcher.
-import { existsSync, readFileSync, statSync } from "node:fs";
-import { join, normalize } from "node:path";
+import { existsSync, readFileSync, statSync, realpathSync } from "node:fs";
+import { join, normalize, sep } from "node:path";
 import { PORT, resolveLlmMode, resolvePlacesMode } from "./config";
 import { createKit, isRunning, kitDir, listKits, loadKit, retryKit, runKit, type KitInput } from "./pipeline";
 import { listFixtures } from "./sources";
@@ -36,15 +36,28 @@ function serveKitFile(slug: string, rel: string): Response {
   if (badSlug(slug)) return json({ error: "bad slug" }, 400);
   const dir = kitDir(slug);
   const target = normalize(join(dir, rel));
-  if (!target.startsWith(dir + "/") && target !== dir) return json({ error: "forbidden" }, 403);
+  // Lexical containment (blocks ../ escape).
+  if (!target.startsWith(dir + sep) && target !== dir) return json({ error: "forbidden" }, 403);
   const ext = target.slice(target.lastIndexOf("."));
   if (!MIME[ext]) return json({ error: "file type not served" }, 403);
   if (!existsSync(target) || !statSync(target).isFile()) return json({ error: "not found" }, 404);
-  const headers: Record<string, string> = { "Content-Type": MIME[ext] };
-  if (ext === ".html") {
-    // Generated pages render in an iframe; keep them sandbox-tight.
-    headers["Content-Security-Policy"] = "default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'";
+  // Symlink containment: resolve to the real path and re-check it stays in the kit tree.
+  let real: string;
+  let realDir: string;
+  try {
+    real = realpathSync(target);
+    realDir = realpathSync(dir);
+  } catch {
+    return json({ error: "not found" }, 404);
   }
+  if (real !== realDir && !real.startsWith(realDir + sep)) return json({ error: "forbidden" }, 403);
+  const headers: Record<string, string> = { "Content-Type": MIME[ext] };
+  // Generated HTML renders in an iframe; other files (SVG especially) could run
+  // script if navigated to directly. A no-script CSP on every kit file closes both.
+  headers["Content-Security-Policy"] =
+    ext === ".html"
+      ? "default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'"
+      : "default-src 'none'; style-src 'unsafe-inline'";
   return new Response(Bun.file(target), { headers });
 }
 
@@ -52,6 +65,11 @@ const server = Bun.serve({
   port: PORT,
   hostname: "127.0.0.1",
   idleTimeout: 120,
+  maxRequestBodySize: 512 * 1024, // operator tool; kit requests are tiny
+  error(err) {
+    console.error("server error:", err);
+    return json({ error: "internal error" }, 500);
+  },
   async fetch(req) {
     const url = new URL(req.url);
     const path = url.pathname;

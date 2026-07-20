@@ -57,6 +57,31 @@ export function timeoutFetch(ms: number): Fetcher {
   return (url, init) => fetch(url, { ...init, signal: AbortSignal.timeout(ms), redirect: init?.redirect ?? "follow" });
 }
 
+// Guard against SSRF when we fetch a user-pasted URL (live Places mode only):
+// reject non-http(s) schemes and literal private / loopback / link-local hosts.
+// Note: this checks the hostname literal, not post-DNS resolution — sufficient for a
+// localhost-bound operator tool; harden with DNS resolution if ever exposed to a network.
+export function assertFetchableUrl(raw: string): URL {
+  let u: URL;
+  try {
+    u = new URL(raw);
+  } catch {
+    throw new Error("That doesn't look like a valid URL.");
+  }
+  if (u.protocol !== "http:" && u.protocol !== "https:") {
+    throw new Error("Only http/https links are supported.");
+  }
+  const h = u.hostname.toLowerCase().replace(/^\[|\]$/g, "");
+  const isPrivate =
+    h === "localhost" || h === "0.0.0.0" || h === "::1" || h === "::" ||
+    h === "169.254.169.254" || h.endsWith(".local") || h.endsWith(".internal") ||
+    /^127\./.test(h) || /^10\./.test(h) || /^192\.168\./.test(h) || /^169\.254\./.test(h) ||
+    /^172\.(1[6-9]|2\d|3[01])\./.test(h) ||
+    /^fe80:/i.test(h) || /^f[cd][0-9a-f]{2}:/i.test(h);
+  if (isPrivate) throw new Error("That URL points to a private or internal address and won't be fetched.");
+  return u;
+}
+
 function requireKey(): string {
   const key = placesApiKey();
   if (!key) throw new Error("No Google Places API key set. Add GOOGLE_PLACES_API_KEY to .env, or use the built-in demo businesses.");
@@ -81,6 +106,7 @@ export async function resolveInput(
   if (idMatch) return placeDetails(idMatch[1], fetcher);
 
   if (/^https?:\/\//i.test(q)) {
+    assertFetchableUrl(q);
     const { name, lat, lng } = await parseMapsUrl(q, fetcher);
     if (!name) throw new Error("Couldn't read a business name from that Maps link — try pasting the business name and city instead.");
     return textSearchTop(name, fetcher, lat, lng);
@@ -94,6 +120,7 @@ export async function parseMapsUrl(url: string, fetcher: Fetcher): Promise<{ nam
   // Expand short links (maps.app.goo.gl / goo.gl) by following redirects manually.
   for (let hop = 0; hop < 4; hop++) {
     if (/google\.[a-z.]+\/maps/i.test(current)) break;
+    assertFetchableUrl(current); // re-check every hop — redirects are attacker-influenced
     const res = await fetcher(current, { redirect: "manual", method: "HEAD" });
     const loc = res.headers.get("location");
     if (!loc) break;
@@ -189,6 +216,7 @@ export async function harvestWebsite(url: string, fetcher: Fetcher = timeoutFetc
     if (url.startsWith("fixture://")) {
       html = readFileSync(join(FIXTURES_DIR, url.replace("fixture://", "")), "utf8");
     } else {
+      assertFetchableUrl(url);
       const res = await fetcher(url, { headers: { "User-Agent": "Mozilla/5.0 (compatible; CurbAppeal/0.1)" } });
       if (!res.ok) {
         out.error = `HTTP ${res.status}`;
