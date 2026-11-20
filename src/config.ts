@@ -33,7 +33,7 @@ const DEFAULTS: AppConfig = {
   agency: {
     name: "CurbAppeal Studio",
     owner: "Diana Cordovez",
-    email: "dianacarolina.cordovez@gmail.com",
+    email: "you@example.com",
     phone: "",
     city: "",
     currency: "USD",
